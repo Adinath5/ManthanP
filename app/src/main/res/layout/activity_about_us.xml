@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrolview1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    >
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:contentInsetStartWithNavigation="0dp"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:layout_marginTop="60dp"
+        android:padding="@dimen/spacing_mlarge"
+        android:scrollbars="none"
+        android:scrollingCache="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:visibility="visible"
+                card_view:cardCornerRadius="2dp"
+                card_view:contentPadding="5dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:id="@+id/image"
+                    android:src="@drawable/logo"
+
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Manthan Online Test Series"
+                    android:textStyle="bold"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="80dp"
+                    android:textColor="@color/colorAccentDark"
+                    android:paddingLeft="@dimen/spacing_middle"
+                    android:paddingRight="@dimen/spacing_middle"
+                    android:layout_marginTop="@dimen/spacing_large"
+                    android:background="@drawable/edit_text_round_bg_white"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_gravity="center"
+                android:visibility="visible"
+                android:background="#dde4dd"
+                card_view:cardCornerRadius="2dp"
+                card_view:contentPadding="5dp">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lv1"
+                    android:background="#dde4dd"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:text="Office Address :"
+                    android:textStyle="bold"
+                    android:gravity="top"
+                    android:textColor="@color/colorAccentDark"
+                    android:paddingLeft="@dimen/spacing_middle"
+                    android:paddingRight="@dimen/spacing_middle"
+                    android:layout_marginTop="@dimen/spacing_middle"
+                    android:background="@drawable/edit_text_round_bg_white"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="बी.-५, ६, करण कोर्ट, जिल्हा न्यायालयासमोर,\n अहमदनगर - ४१४००१ \n फोन नं. - ०२४१ २३२ २००२"
+                    android:textStyle="normal"
+                    android:textColor="@color/colorAccentDark"
+                    android:paddingLeft="@dimen/spacing_middle"
+                    android:paddingRight="@dimen/spacing_middle"
+                    android:layout_marginTop="@dimen/spacing_middle"
+                    android:background="@drawable/edit_text_round_bg_white"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="१. मंथन राज्यस्तरीय प्रज्ञाशोध परिक्षा"
+                            android:textStyle="normal"
+                            android:textColor="@color/design_default_color_primary"
+                            android:paddingLeft="@dimen/spacing_middle"
+                            android:paddingRight="@dimen/spacing_middle"
+                            android:layout_marginTop="@dimen/spacing_medium"
+                            android:background="@drawable/edit_text_round_bg_white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="  (इयत्ता २ री ते ८ वी - मराठी, इंग्रजी व सेमी इंग्रजी )"
+                            android:textStyle="normal"
+                            android:textColor="@color/design_default_color_on_secondary"
+                            android:paddingLeft="@dimen/spacing_middle"
+                            android:paddingRight="@dimen/spacing_middle"
+                            android:background="@drawable/edit_text_round_bg_white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="   9922950627, 9860347255"
+                            android:textStyle="normal"
+                            android:textColor="@color/colorAccentDark"
+                            android:paddingLeft="@dimen/spacing_middle"
+                            android:paddingRight="@dimen/spacing_middle"
+                            android:background="@drawable/edit_text_round_bg_white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="२. प्रज्ञाशोध, शिष्यवृत्ती परिक्षा - मार्गदर्शक सराव व संच"
+                            android:textStyle="normal"
+                            android:textColor="@color/design_default_color_primary"
+                            android:paddingLeft="@dimen/spacing_middle"
+                            android:paddingRight="@dimen/spacing_middle"
+                            android:layout_marginTop="@dimen/spacing_medium"
+                            android:background="@drawable/edit_text_round_bg_white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="  ( मराठी, इंग्रजी व सेमी इंग्रजी )"
+                            android:textStyle="normal"
+                            android:textColor="@color/design_default_color_on_secondary"
+                            android:paddingLeft="@dimen/spacing_middle"
+                            android:paddingRight="@dimen/spacing_middle"
+                            android:background="@drawable/edit_text_round_bg_white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="   9860347255"
+                            android:textStyle="normal"
+                            android:textColor="@color/colorAccentDark"
+                            android:paddingLeft="@dimen/spacing_middle"
+                            android:paddingRight="@dimen/spacing_middle"
+                            android:background="@drawable/edit_text_round_bg_white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="३. साप्ताहीक ज्ञानवंत -"
+                            android:textStyle="normal"
+                            android:textColor="@color/design_default_color_primary"
+                            android:paddingLeft="@dimen/spacing_middle"
+                            android:paddingRight="@dimen/spacing_middle"
+                            android:layout_marginTop="@dimen/spacing_medium"
+                            android:background="@drawable/edit_text_round_bg_white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="  ( माहेवार स्पर्धा परिक्षा प्रश्नपत्रिका संच व  \n   अभ्यासक्रमावर आधारीत व्यवसाय )"
+                            android:textStyle="normal"
+                            android:textColor="@color/design_default_color_on_secondary"
+                            android:paddingLeft="@dimen/spacing_middle"
+                            android:paddingRight="@dimen/spacing_middle"
+                            android:background="@drawable/edit_text_round_bg_white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="   9422282895"
+                            android:textStyle="normal"
+                            android:textColor="@color/colorAccentDark"
+                            android:paddingLeft="@dimen/spacing_middle"
+                            android:paddingRight="@dimen/spacing_middle"
+                            android:background="@drawable/edit_text_round_bg_white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:visibility="visible"
+                card_view:cardCornerRadius="2dp"
+                card_view:contentPadding="5dp">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="App Developed By :"
+                    android:id="@+id/txtappdev"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:paddingLeft="@dimen/spacing_middle"
+                    android:paddingRight="@dimen/spacing_middle"
+                    android:layout_marginTop="@dimen/spacing_large"
+                    android:background="@drawable/edit_text_round_bg_white"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="  Zorwa's Pvt. Ltd."
+                    android:textStyle="bold"
+                    android:id="@+id/txtcompname"
+                    android:layout_below="@id/txtappdev"
+                    android:textColor="@color/blue_grey_600"
+                    android:paddingLeft="@dimen/spacing_middle"
+                    android:paddingRight="@dimen/spacing_middle"
+                    android:background="@drawable/edit_text_round_bg_white"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=" Shop No. 3, First Floor, Nirman \n Pride, New Nagar Road, \n Sangamner- 422605, \n Dist- Ahmednagar"
+                        android:textStyle="normal"
+                        android:id="@+id/txtcompadd"
+                        android:layout_below="@id/txtcompname"
+                        android:textColor="@color/blue_grey_600"
+                        android:paddingLeft="@dimen/spacing_middle"
+                        android:paddingRight="@dimen/spacing_middle"
+                        android:background="@drawable/edit_text_round_bg_white"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=" Contact-7798261610"
+                        android:textStyle="normal"
+                        android:id="@+id/txtcompadd1"
+                        android:layout_below="@id/txtcompadd"
+                        android:textColor="@color/blue_grey_600"
+                        android:paddingLeft="@dimen/spacing_middle"
+                        android:paddingRight="@dimen/spacing_middle"
+                        android:background="@drawable/edit_text_round_bg_white"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,92 @@
+<resources>
+    <string name="app_name">Manthan</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="version_unknown">Unknown</string>
+    <string name="app_version">Version</string>
+    <string name="default_notification_channel_id">Default</string>
+    <string name="webview_loading">Load Content... </string>
+
+
+    <string name="backbutton">Are you sure,want to Exit from App?</string>
+    <string name="yes_dialog">Yes</string>
+    <string name="no_dialog">No</string>
+
+    <string name="url_app_google_play">https://play.google.com/store/apps/details?id=com.wire</string>
+
+    <string name="http">http://</string>
+    <string name="download">Download</string>
+    <string name="write_file">This app needs access to your file storage so that it can write files.</string>
+
+
+    <string name="OK">OK</string>
+    <string name="GOT_IT">GOT IT</string>
+    <string name="YES">YES</string>
+    <string name="NO">NO</string>
+    <string name="SETTING">SETTING</string>
+    <string name="CANCEL">CANCEL</string>
+    <string name="CLOSE">CLOSE</string>
+    <string name="UPDATE">UPDATE</string>
+    <string name="DISMISS">DISMISS</string>
+    <string name="HIDE">HIDE</string>
+    <string name="RETRY">RETRY</string>
+    <string name="TRY_AGAIN">TRY AGAIN</string>
+    <string name="DETAILS">DETAILS</string>
+    <string name="FAILED">FAILED</string>
+    <string name="TYPE_SEARCH">SEARCH</string>
+    <string name="NO_IMAGE">NO IMAGE</string>
+    <string name="DELETE">DELETE</string>
+    <string name="DISCARD">DISCARD</string>
+    <string name="AGREE">AGREE</string>
+    <string name="DISAGREE">DISAGREE</string>
+    <string name="OPEN">OPEN</string>
+    <string name="SAVE">SAVE</string>
+    <string name="NEXT">NEXT</string>
+    <string name="BACK">BACK</string>
+    <string name="SKIP">SKIP</string>
+
+    <string name="firstclass">First Class</string>
+    <string name="Secondclass">Second Class</string>
+    <string name="thidclass">Thirth Class</string>
+    <string name="fourthclass">Fourth Class</string>
+    <string name="fifthclass">Fifth Class</string>
+    <string name="sixthclass">Sixth Class</string>
+    <string name="seventhclass">Seventh Class</string>
+    <string name="eighthclass">Eighth Class</string>
+    <string name="ninthclass">Ninth Class</string>
+    <string name="tenthclass">Tenth Class</string>
+
+    <string name="firstexid">FirstClassTestOne</string>
+    <string name="twoexid">SecondClassTestOne</string>
+    <string name="threeexid">ThirdClassTestOne</string>
+    <string name="fourexid">FourthClassTestOne</string>
+    <string name="fiveexid">FifthClassTestOne</string>
+    <string name="sixexid">SixhClassTestOne</string>
+    <string name="sevenexid">SeventhClassTestOne</string>
+    <string name="eightexid">EighthClassTestOne</string>
+    <string name="nineexid">NinthClassTestOne</string>
+    <string name="tenexid">TenthClassTestOne</string>
+
+
+    <string name="testone">Test I </string>
+    <string name="testtwo">Test II</string>
+    <string name="testthree">Test III</string>
+    <string name="testfour">Test IV</string>
+    <string name="testfive">Test V</string>
+    <string name="testsix">Test VI</string>
+    <string name="testseven">Test VII</string>
+    <string name="testeight">Test VIII</string>
+    <string name="testnine">Test IX</string>
+    <string name="testten">Test X</string>
+
+    <string name="testonepaperne">Paper I</string>
+    <string name="testonepapertwo">Paper II</string>
+
+    <string name="lorem_ipsum">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam efficitur ipsum in placerat molestie.  Fusce quis mauris a enim sollicitudin
+        \n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam efficitur ipsum in placerat molestie.  Fusce quis mauris a enim sollicitudin
+    </string>
+
+</resources>
