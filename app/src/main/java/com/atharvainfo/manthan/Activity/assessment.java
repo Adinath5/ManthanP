@@ -1,11 +1,13 @@
 package com.atharvainfo.manthan.Activity;
 
 import androidx.annotation.IdRes;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.text.HtmlCompat;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -25,6 +27,7 @@ import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,6 +51,7 @@ import com.atharvainfo.manthan.Model.Quetion_Model_List;
 import com.atharvainfo.manthan.R;
 import com.atharvainfo.manthan.utils.HttpRequest;
 import com.atharvainfo.manthan.utils.Tools;
+import com.github.chrisbanes.photoview.PhotoView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -112,7 +116,7 @@ public class assessment extends AppCompatActivity {
 
     AppCompatCheckBox check_invalid;
     int count;
-
+    int noofqtprepare=0;
     SQLiteDatabase mdatabase;
     DatabaseHelper helper;
 
@@ -309,8 +313,8 @@ public class assessment extends AppCompatActivity {
                 radiogrp.clearCheck();
                 Log.e("PreviousQ: Student_id",student_id+"///"+exam_id+"//"+rowListItem.get(i).getQuetion_id()+"//"+exid);
 
-                helper.openDatabase();
-                helper.close();
+                //helper.openDatabase();
+                //helper.close();
                 mdatabase = helper.getWritableDatabase();
                 String sql ="Select studentid,examid,questionid,checkedid,selected_and,realanswer from assesmenttbl where exid ='"+ exid +"' and studentid='"+ student_id +"' and examid='"+ exam_id +"' and questionid='"+ rowListItem.get(i).getQuetion_id() +"'";
                 Cursor cursor = mdatabase.rawQuery(sql, null);
@@ -520,11 +524,14 @@ public class assessment extends AppCompatActivity {
 
 
 
-                helper.openDatabase();
-                helper.close();
+                //helper.openDatabase();
+                //helper.close();
                 mdatabase = helper.getWritableDatabase();
 
-
+                Log.i("Selected Ans", selected_answer);
+                if (selected_answer != null && !selected_answer.isEmpty() && !selected_answer.equals("null")){
+                    noofqtprepare += 1;
+                }
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("studentid", student_id);
                 contentValues.put("examid", exam_id);
@@ -543,13 +550,14 @@ public class assessment extends AppCompatActivity {
                 mdatabase.close();
 
                 radiogrp.clearCheck();
+                selected_answer = "";
 
                 i++;
 
                 Log.e("NextQ Student_id",student_id+"///"+exam_id+"//"+rowListItem.get(i).getQuetion_id()+"//"+exid);
                 quetion_id = rowListItem.get(i).getQuetion_id();
-                helper.openDatabase();
-                helper.close();
+                //helper.openDatabase();
+                //helper.close();
                 mdatabase = helper.getWritableDatabase();
                 String sql ="Select studentid,examid,questionid,checkedid,selected_and,realanswer from assesmenttbl where exid ='"+  exid +"' and studentid='"+ student_id +"' and examid='"+ exam_id +"' and questionid='"+ rowListItem.get(i).getQuetion_id() +"'";
                 Cursor cursor = mdatabase.rawQuery(sql, null);
@@ -582,6 +590,7 @@ public class assessment extends AppCompatActivity {
                 } else {
                     edit_fill_answer.setText(null);
                     radiogrp.clearCheck();
+                    selected_answer = "";
                 }
 
                 cursor.close();
@@ -783,6 +792,48 @@ public class assessment extends AppCompatActivity {
             }
         });
 
+        image_quetion1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                byte[] decodedString = Base64.decode(rowListItem.get(i).getQuestion_image(), Base64.DEFAULT);
+                Bitmap imgBitMap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                //image_quetion1.setImageBitmap(imgBitMap); //Sets the Bitmap to ImageView
+
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(assessment.this);
+                View mView = getLayoutInflater().inflate(R.layout.dialog_custom_layout, null);
+                PhotoView photoView = mView.findViewById(R.id.imageView);
+                photoView.setImageBitmap(imgBitMap);
+                mBuilder.setView(mView);
+                AlertDialog mDialog = mBuilder.create();
+               // WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+               // lp.copyFrom(mDialog.getWindow().getAttributes());
+               // lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+               // lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                mDialog.show();
+            }
+        });
+
+        image_op1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                byte[] decodedString = Base64.decode(rowListItem.get(i).getOp1_image(), Base64.DEFAULT);
+                Bitmap imgBitMap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                //image_op1.setImageBitmap(imgBitMap); //Sets the Bitmap to ImageView
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(assessment.this);
+                View mView = getLayoutInflater().inflate(R.layout.dialog_custom_layout, null);
+                PhotoView photoView = mView.findViewById(R.id.imageView);
+                photoView.setImageBitmap(imgBitMap);
+                mBuilder.setView(mView);
+                AlertDialog mDialog = mBuilder.create();
+               // WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+               // lp.copyFrom(mDialog.getWindow().getAttributes());
+               // lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+               // lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                mDialog.show();
+
+            }
+        });
+
     }
 
 
@@ -790,7 +841,7 @@ public class assessment extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(exam_title);
+        getSupportActionBar().setTitle(exam_id);
         // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Tools.setSystemBarColor(this, R.color.colorPrimary);
     }
@@ -1099,7 +1150,7 @@ public class assessment extends AppCompatActivity {
         //selected_answer = rb.getText().toString();
 
         final String exDate = dateform.format(c.getTime());
-        String noofq = noofqt;
+        final String noofq = noofqt;
 
 
         sharedPreferences = getApplicationContext().getSharedPreferences("Mydata", MODE_PRIVATE);
@@ -1118,6 +1169,7 @@ public class assessment extends AppCompatActivity {
                 map.put("examid", examid);
                 map.put("exid", exmid);
                 map.put("exdate", exDate);
+                map.put("noofqt", noofq);
 
                 try {
                     HttpRequest req = new HttpRequest(MyConfig.URL_ADD_ASSESSMENT);
@@ -1230,8 +1282,8 @@ public class assessment extends AppCompatActivity {
 
 
         Boolean res;
-        helper.openDatabase();
-        helper.close();
+        //helper.openDatabase();
+        //helper.close();
         mdatabase = helper.getWritableDatabase();
         String sql ="Select studentid,examid,exid,selected_and,realanswer from assesmenttbl where exid ='"+  exid +"' and studentid='"+ student_id +"' and examid='"+ exam_id +"'";
         Cursor cursor = mdatabase.rawQuery(sql, null);
@@ -1241,7 +1293,7 @@ public class assessment extends AppCompatActivity {
                 sland = cursor.getString(3);
                 Log.i("Real Ans", rlans);
                 Log.i("Selected Ans", sland);
-
+                Log.i("Atended Quetions ", String.valueOf(noofqtprepare));
                 res = rlans.equals(sland);
                 Log.i("Result", res.toString());
                 if (res == true){
@@ -1256,7 +1308,7 @@ public class assessment extends AppCompatActivity {
         cursor.close();
         mdatabase.close();
 
-
+        final String excomp = "Completed";
         showSimpleProgressDialog(this, "Registring...","Please Wait ...",false);
 
         new AsyncTask<Void, Void, String>(){
@@ -1270,6 +1322,8 @@ public class assessment extends AppCompatActivity {
                 map.put("noofqt", noofq);
                 map.put("rightans", rans);
                 map.put("wrongans", wans);
+                map.put("solvedqt", String.valueOf(noofqtprepare));
+                map.put("excompleted", excomp);
 
                 try {
                     HttpRequest req = new HttpRequest(MyConfig.URL_UPDATE_ASSESSMENT);

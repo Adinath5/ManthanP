@@ -19,8 +19,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private final static String TAG = "DatabaseHelper";
     public static String DB_NAME = "manthan.db";
-    private final Context myContext;
-    public static String DB_PATH ="";// "/data/data/com.atharvainfosolutions.myleader/databases/";
+    private final Context mcontext;
+    //public static String DB_PATH ="";// "/data/data/com.atharvainfosolutions.myleader/databases/";
+    public static String DB_PATH ="/data/data/com.atharvainfo.manthan/databases/manthan.db";
     public static String mPath = DB_PATH+DB_NAME;
     private static final String DATABASE_NAME = "manthan.db";
 
@@ -36,110 +37,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final int DB_VERSION = 1;
 
-    public DatabaseHelper(Context context)
-    {
-        super(context, DATABASE_NAME ,null, DATABASE_VERSION);
-        this.myContext = context;
-        DB_PATH = context.getDatabasePath(DB_NAME).getPath();
-        //pathToSaveDBFile = filePath.toString();
-        boolean dbexist = checkDataBase();
-        if (dbexist) {
-            openDatabase();
+
+
+    public DatabaseHelper(Context context) {
+        super(context, DB_NAME, null, DB_VERSION);
+        this.mcontext = context;
+        Log.d("DBVERSION","The Database Version (as hard coded) is " + String.valueOf(DB_VERSION));
+
+        int dbversion = DatabaseAssetHandler.getVersionFromDBFile(context,DB_NAME);
+        Log.d("DBVERSION","The Database Version (as per the database file) is " + String.valueOf(dbversion));
+
+        // Copy the Database if no database exists
+        if (!DatabaseAssetHandler.checkDataBase(context,DB_NAME)) {
+            DatabaseAssetHandler.copyDataBase(context,DB_NAME,true,DB_VERSION);
         } else {
-            System.out.println("Database doesn't exist");
-            try {
-                createDataBase();
-            } catch (IOException e) {
-                e.printStackTrace();
+            // Copy the database if DB_VERSION is greater then the version stored in the database (user_version value in the db header)
+            if (DB_VERSION > dbversion && DatabaseAssetHandler.checkDataBase(context, DB_NAME)) {
+                DatabaseAssetHandler.copyDataBase(context, DB_NAME, true,DB_VERSION);
+               // DatabaseAssetHandler.restoreTable(context,DB_NAME,????THE_TABLE_NAME????); // Example of restoring a table (note ????THE_TABLE_NAME???? must be changed accordingly)
+                DatabaseAssetHandler.clearForceBackups(context, DB_NAME); // Clear the backups
             }
         }
-    }
-
-    public void createDataBase() throws IOException {
-        boolean dbexist = checkDataBase();
-        if(!dbexist) {
-            this.getReadableDatabase();
-            Log.d("CopingDatabase", "Create Database");
-
-            try {
-                copyDataBase();
-            } catch(IOException e) {
-                throw new Error("Error copying database");
-            }
-
-        }
-    }
-
-    private boolean checkDataBase() {
-        boolean checkDB = false;
-        try {
-            File file = new File(DB_PATH);
-            checkDB = file.exists();
-            Log.d("Database", "Database Exist");
-        } catch(SQLiteException e) {
-            Log.d(TAG, e.getMessage());
-        }
-        return checkDB;
-
-        // File DbFile = new File(DB_PATH + DB_NAME);
-        // Log.d("Database", "Database Exist");
-        // return DbFile.exists();
-    }
-
-    private void copyDataBase() throws IOException {
-        String outfileName = DB_PATH;
-        OutputStream os = new FileOutputStream(outfileName);
-        InputStream is = myContext.getAssets().open(DATABASE_NAME);
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = is.read(buffer)) > 0) {
-            os.write(buffer, 0, length);
-        }
-        is.close();
-        os.flush();
-        os.close();
-    }
-
-
-    public void deleteDB(){
-        File file = new File(pathToSaveDBFile);
-
-        if (file.exists()){
-            file.delete();
-            Log.d(TAG, "Database Deleted");
-        }
-    }
-    public boolean openDatabase() throws SQLiteException
-    {
-        Log.d(TAG, "Database open");
-        Log.d(TAG, DB_PATH.toString());
-        mDataBase = SQLiteDatabase.openDatabase(DB_PATH, null, SQLiteDatabase.CREATE_IF_NECESSARY);
-        return mDataBase != null;
-
-    }
-    public synchronized void close(){
-        if(mDataBase != null)
-            mDataBase.close();
-        SQLiteDatabase.releaseMemory();
-        super.close();
+        mDataBase = this.getWritableDatabase();
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db){
-
+    public void onCreate(SQLiteDatabase db) {
     }
 
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-
+    // onUpgrade should not be used for the copy as may be issues due to db being opened
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
-    private int getVersionId() {
-        SQLiteDatabase db = SQLiteDatabase.openDatabase(pathToSaveDBFile, null, SQLiteDatabase.OPEN_READONLY);
-        String query = "SELECT version_id FROM dbVersion";
-        Cursor cursor = db.rawQuery(query, null);
-        cursor.moveToFirst();
-        int v =  cursor.getInt(0);
-        db.close();
-        return v;
-    }
 }

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.atharvainfo.manthan.Activity.view_exam;
 import com.atharvainfo.manthan.Model.Exam_Model_List;
 import com.atharvainfo.manthan.R;
 import java.util.ArrayList;
@@ -61,7 +62,6 @@ public class Exam_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             text_exam_fee = (TextView) v.findViewById(R.id.text_exam_fee);
             text_deadline= (TextView) v.findViewById(R.id.text_deadline);
             btn_take_exam= (Button) v.findViewById(R.id.btn_take_exam);
-
             lyt_parent= (View) v.findViewById(R.id.lyt_parent);
         }
     }
@@ -84,12 +84,12 @@ public class Exam_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (holder instanceof OriginalViewHolder) {
             final OriginalViewHolder view = (OriginalViewHolder) holder;
 
-            view.test_name.setText(p.getExam_title());
-            view.test_type.setText(p.getType());
-            view.txt_subject.setText(p.getSubject());
-            view.txt_dept_class.setText(p.getDept_name());
+            view.test_name.setText(p.getClass_name());
+            view.test_type.setText(p.getExam_type());
+            view.txt_subject.setText(p.getExam_testname());
+            view.txt_dept_class.setText(p.getExam_papername());
             view.text_exam_fee.setText(p.getExam_fee());
-            view.text_deadline.setText(p.getDeadline());
+            view.text_deadline.setText(p.getExam_medium());
 
 
             view.lyt_parent.setOnClickListener(new View.OnClickListener() {
@@ -106,29 +106,22 @@ public class Exam_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     sharedPreferences =ctx.getSharedPreferences("Mydata", MODE_PRIVATE);
                     editor = sharedPreferences.edit();
                     editor.putString("exam_id", p.getExam_id());
-                    editor.putString("exam_title", p.getExam_title());
-                    editor.putString("exam_type", p.getType());
-                    editor.putString("exam_fee", p.getExam_fee());
-                    editor.putString("exam_deadline", p.getDeadline());
-                    editor.putString("exam_department", p.getDept_name());
-                    editor.putString("exam_class", p.getClass_name());
                     editor.putString("exam_duration", p.getDuration());
-                    editor.putString("exam_subject", p.getSubject());
-                    editor.putString("exam_passmark", p.getPassmark() +"%");
-                    editor.putString("exam_retake", p.getRe_take_after());
+                    editor.putString("exam_passmark", p.getPassmark());
+                    editor.putString("exam_fee", p.getExam_fee());
+                    editor.putString("exam_medium", p.getExam_medium());
+                    editor.putString("exam_class", p.getClass_name());
                     editor.putString("exam_status", p.getExam_status());
-                    editor.putString("next_retake", p.getNext_retake());
                     editor.putString("quetions", p.getQuetions());
-                    editor.putString("exam_attended", p.getExam_attended());
-                    editor.putString("student_retake", p.getStudent_retake());
-                    editor.putString("exam_allowed", p.getExam_allowed());
-                    editor.putString("next_retake_b", p.getNext_retake_b());
+                    editor.putString("exam_testname", p.getExam_testname());
+                    editor.putString("exam_papername", p.getExam_papername());
                     editor.putString("terms", p.getTerms());
+                    editor.putString("exam_type", p.getExam_type());
                     editor.commit();
 
-                   // Intent i = new Intent(ctx, View_Exam.class);
-                   // ctx.startActivity(i);
-                   // ((Activity)ctx).finish();
+                    Intent i = new Intent(ctx, view_exam.class);
+                    ctx.startActivity(i);
+                    ((Activity)ctx).finish();
                 }
             });
 
@@ -149,23 +142,22 @@ public class Exam_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             items.addAll(arraylist);
         } else {
             for (Exam_Model_List wp : arraylist) {
-                if (wp.getExam_title().toLowerCase(Locale.getDefault())
+                if (wp.getClass_name().toLowerCase(Locale.getDefault())
                         .contains(charText)) {
                     items.add(wp);
                 }
-                if (wp.getType().toLowerCase(Locale.getDefault())
+                if (wp.getExam_type().toLowerCase(Locale.getDefault())
                         .contains(charText)) {
                     items.add(wp);
                 }
-                if (wp.getSubject().toLowerCase(Locale.getDefault())
+                if (wp.getExam_testname().toLowerCase(Locale.getDefault())
                         .contains(charText)) {
                     items.add(wp);
                 }
-                if (wp.getDeadline().toLowerCase(Locale.getDefault())
+                if (wp.getExam_papername().toLowerCase(Locale.getDefault())
                         .contains(charText)) {
                     items.add(wp);
                 }
-
 
             }
         }

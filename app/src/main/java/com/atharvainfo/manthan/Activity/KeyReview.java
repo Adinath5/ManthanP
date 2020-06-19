@@ -158,8 +158,8 @@ public class KeyReview extends AppCompatActivity {
 
             JSONObject json = j.getJSONObject(i);
             String qid = json.getString("quetion_id");
-            helper.openDatabase();
-            helper.close();
+            //helper.openDatabase();
+            //helper.close();
             mdatabase = helper.getWritableDatabase();
             String sql ="Select studentid,examid,exid,selected_and,checkedid from assesmenttbl where exid ='"+  exid +"' and studentid='"+ student_id +"' and examid='"+ exam_id +"' and questionid= '"+ qid +"'";
             Cursor cursor = mdatabase.rawQuery(sql, null);
@@ -168,6 +168,9 @@ public class KeyReview extends AppCompatActivity {
                     SelectedAns = cursor.getString(3);
                     SelectedId = cursor.getString(4);
                 }
+            } else {
+                SelectedId = "";
+                SelectedAns= "Skip";
             }
             cursor.close();
             mdatabase.close();

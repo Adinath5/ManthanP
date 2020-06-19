@@ -2,6 +2,9 @@ package com.atharvainfo.manthan.Activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -45,8 +48,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atharvainfo.manthan.Class.MyConfig;
+import com.atharvainfo.manthan.Model.UserData;
 import com.atharvainfo.manthan.R;
 import com.atharvainfo.manthan.utils.HttpRequest;
+import com.atharvainfo.manthan.utils.RequestHandler;
+import com.atharvainfo.manthan.utils.Tools;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -90,7 +96,7 @@ public class EditProfile extends AppCompatActivity {
 
     FloatingActionButton btn_edit_profile ;
     TextView txt_stud_id;
-    CircularImageView imageview;
+    ImageView imageview, imageView1;
     EditText edit_first_name,edit_last_name,edit_email,et_gender,et_department,et_class, et_village, et_school;
 
     SharedPreferences sharedPreferences;
@@ -106,7 +112,7 @@ public class EditProfile extends AppCompatActivity {
     private final int PICK_FROM_FILE = 2;
 
     String Image;
-
+    Uri imageUri;
     private final static int ALL_PERMISSIONS_RESULT = 107;
 
     private ArrayList permissionsToRequest;
@@ -122,6 +128,11 @@ public class EditProfile extends AppCompatActivity {
     private final int jsoncode = 1;
     private static ProgressDialog mProgressDialog;
 
+    public static final String UPLOAD_URL = "http://manthanpublication.com/manthanapp/uploadphoto.php";
+    public static final String UPLOAD_KEY = "image";
+    public static final String TAG = "MY MESSAGE";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,7 +141,8 @@ public class EditProfile extends AppCompatActivity {
         btn_edit_profile = (FloatingActionButton) findViewById(R.id.btn_edit_profile);
 
         txt_stud_id= (TextView) findViewById(R.id.txt_stud_id);
-        imageview = (CircularImageView) findViewById(R.id.imageview);
+        imageview = (ImageView) findViewById(R.id.imageview);
+        imageView1 = (ImageView) findViewById(R.id.imageview1);
         edit_first_name = (EditText) findViewById(R.id.edit_first_name);
         edit_last_name = (EditText) findViewById(R.id.edit_last_name);
         edit_email = (EditText) findViewById(R.id.edit_email);
@@ -139,12 +151,18 @@ public class EditProfile extends AppCompatActivity {
         et_class = (EditText) findViewById(R.id.et_class);
         et_school = (EditText)findViewById(R.id.et_schoolname);
 
+        //RoundedBitmapDrawable mDrawable = RoundedBitmapDrawableFactory.create(getResources(), String.valueOf(R.drawable.photo_male_7));
+        //mDrawable.setCircular(true);
+        //imageview.setImageDrawable(mDrawable);
+
+
         fetchJSON();
 
         (findViewById(R.id.bt_create_account)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                UpdateProfileData();
+               //Update_Data();
             }
         });
 
@@ -177,11 +195,17 @@ public class EditProfile extends AppCompatActivity {
         et_school.setText(class_name);
         et_village.setText(student_village);
 
-
+        initToolbar();
 
     }
 
-
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Profile : " + stid);
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Tools.setSystemBarColor(this, R.color.colorPrimary);
+    }
 
     private Uri getCaptureImageOutputUri() {
         Uri outputFileUri = null;
@@ -297,6 +321,7 @@ public class EditProfile extends AppCompatActivity {
         if (requestCode == PICK_FROM_CAMERA) {
             try {
                 Uri selectedImage = data.getData();
+                imageUri = data.getData();
                 bitmap = (Bitmap) data.getExtras().get("data");
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
@@ -319,12 +344,18 @@ public class EditProfile extends AppCompatActivity {
                 }
 
                 imgPath = destination.getAbsolutePath();
-                imageview.setImageBitmap(bitmap);
+                RoundedBitmapDrawable mDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+                mDrawable.setCircular(true);
+                imageview.setImageDrawable(mDrawable);
 
+                imageView1.setImageBitmap(bitmap);
+
+                uploadImage();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else if (requestCode == PICK_FROM_FILE) {
+            imageUri = data.getData();
             Uri selectedImage = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
@@ -334,7 +365,11 @@ public class EditProfile extends AppCompatActivity {
 
                 imgPath = getRealPathFromURI(selectedImage);
                 destination = new File(imgPath.toString());
-                imageview.setImageBitmap(bitmap);
+                imageView1.setImageBitmap(bitmap);
+                RoundedBitmapDrawable mDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+                mDrawable.setCircular(true);
+                imageview.setImageDrawable(mDrawable);
+                uploadImage();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -504,153 +539,57 @@ public class EditProfile extends AppCompatActivity {
 
     }
 
-    private void doCrop() {
-        final ArrayList<CropOption> cropOptions = new ArrayList<CropOption>();
-        /**
-         * Open image crop app by starting an intent
-         * ‘com.android.camera.action.CROP‘.
-         */
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setType("image/*");
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        /**
-         * Check if there is image cropper app installed.
-         */
-        List<ResolveInfo> list = getPackageManager().queryIntentActivities(
-                intent, 0);
 
-        int size = list.size();
 
-        /**
-         * If there is no image cropper app, display warning message
-         */
-        if (size == 0) {
+    private void uploadImage(){
+        class UploadImage extends AsyncTask<Bitmap,Void,String>{
 
-            Toast.makeText(getApplicationContext(), "Can not find image crop app",
-                    Toast.LENGTH_SHORT).show();
+            ProgressDialog loading;
+            RequestHandler rh = new RequestHandler();
 
-            return;
-        } else {
-            /**
-             * Specify the image path, crop dimension and scale
-             */
-            intent.setData(mImageCaptureUri);
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(EditProfile.this, "Uploading Image", "Please wait...",true,true);
+            }
 
-            intent.putExtra("outputX", 200);
-            intent.putExtra("outputY", 200);
-            intent.putExtra("aspectX", 1);
-            intent.putExtra("aspectY", 1);
-            intent.putExtra("scale", true);
-            intent.putExtra("return-data", true);
-            /**
-             * There is posibility when more than one image cropper app exist,
-             * so we have to check for it first. If there is only one app, open
-             * then app.
-             */
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+            }
 
-            if (size == 1) {
-                Intent i = new Intent(intent);
-                ResolveInfo res = list.get(0);
+            @Override
+            protected String doInBackground(Bitmap... params) {
+                Bitmap bitmap = params[0];
+                String uploadImage = getStringImage(bitmap);
 
-                i.setComponent(new ComponentName(res.activityInfo.packageName,
-                        res.activityInfo.name));
+                HashMap<String,String> data = new HashMap<>();
+                data.put(UPLOAD_KEY, uploadImage);
+                data.put("userphone", stid);
 
-                //startActivityForResult(i, CROP_FROM_CAMERA);
-            } else {
-                /**
-                 * If there are several app exist, create a custom chooser to
-                 * let user selects the app.
-                 */
-                for (ResolveInfo res : list) {
-                    final CropOption co = new CropOption();
+                String result = rh.sendPostRequest(UPLOAD_URL,data);
 
-                    co.title = getPackageManager().getApplicationLabel(
-                            res.activityInfo.applicationInfo);
-                    co.icon =getPackageManager().getApplicationIcon(
-                            res.activityInfo.applicationInfo);
-                    co.appIntent = new Intent(intent);
-
-                    co.appIntent
-                            .setComponent(new ComponentName(
-                                    res.activityInfo.packageName,
-                                    res.activityInfo.name));
-
-                    cropOptions.add(co);
-                }
-
-                CropOptionAdapter adapter = new CropOptionAdapter(
-                        getApplicationContext(), cropOptions);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Choose Crop App");
-                builder.setAdapter(adapter,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int item) {
-                               // startActivityForResult(
-                               //         cropOptions.get(item).appIntent,
-                               //         CROP_FROM_CAMERA);
-                            }
-                        });
-
-                builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-
-                        if (mImageCaptureUri != null) {
-                            getContentResolver().delete(mImageCaptureUri, null,
-                                    null);
-                            mImageCaptureUri = null;
-                        }
-                    }
-                });
-
-                AlertDialog alert = builder.create();
-
-                alert.show();
+                return result;
             }
         }
+
+        UploadImage ui = new UploadImage();
+        ui.execute(bitmap);
     }
 
-    public void Update_Data() {
-
-        nameValuePairs.add(new BasicNameValuePair("student_id", student_id));
-        nameValuePairs.add(new BasicNameValuePair("image", Image));
-
-        try {
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(MyConfig.URL_Update_Photo_Profile);
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
-            //  is = entity.getContent();
-            String data = EntityUtils.toString(entity);
-            Log.e("Register", data);
-            if (data.matches("Record Updated Successfully")) {
-                Log.e("pass 1", "connection success ");
-
-                Toast.makeText(getApplicationContext(), "Submit Successfully", Toast.LENGTH_SHORT).show();
-/*
-                Intent i = new Intent(Activity_Form2.this, Verification.class);
-                // i.putExtra("phone_number", phone);
-                startActivity(i);
-                finish();*/
-
-            }
-            if (data.matches("Something went wrong")) {
-                Log.e("pass 1", "connection success ");
-
-                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (ClientProtocolException e) {
-            Log.e("Fail 1", e.toString());
-            Toast.makeText(getApplicationContext(), "Invalid IP Address", Toast.LENGTH_LONG).show();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //}
+    public String getStringImage(Bitmap bmp){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
+    }
+    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 
     private void UpdateProfileData(){
@@ -659,9 +598,13 @@ public class EditProfile extends AppCompatActivity {
         sharedPreferences.edit();
         stid= sharedPreferences.getString("user_name",null);
 
-        Bitmap selectedImage = ((BitmapDrawable) imageview.getDrawable()).getBitmap();
+       // final Bitmap selectedImage = ((BitmapDrawable) imageView1.getDrawable()).getBitmap();
+       // final Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 
-        final String studimage = conv_Image_String(selectedImage);
+       // final String studimage = conv_Image_String(selectedImage);
+       // final String uploadImage = getStringImage(selectedImage);
+       // final long imagename = Long.valueOf(student_id);
+
 
         Log.i("UserName", stid);
 
@@ -672,7 +615,6 @@ public class EditProfile extends AppCompatActivity {
                 String response="";
                 HashMap<String, String> map=new HashMap<>();
                 map.put("username", stid);
-                map.put("studentimage", studimage);
                 map.put("firstname", edit_first_name.getText().toString());
                 map.put("lastname", edit_last_name.getText().toString());
                 map.put("gender", et_gender.getText().toString());
@@ -774,15 +716,27 @@ public class EditProfile extends AppCompatActivity {
                 for (int i = 0; i < json.length(); i++)
                 {
                     JSONObject obj = json.getJSONObject(i);
-                    student_id = obj.getString("studentid");
-                    first_name= obj.getString("firstname");
-                    last_name = obj.getString("lastname");
-                    gender = obj.getString("gender");
-                    student_class = obj.getString("classname");
-                    email = obj.getString("useremail");
-                    class_name = obj.getString("schoolname");
-                    student_village = obj.getString("village");
-                    studentimage = obj.getString("student_image");
+                    UserData userData = new UserData(obj.getString("userphone"),
+                            obj.getString("useremail"),
+                            obj.getString("userpass"),
+                            obj.getString("firstname"),
+                            obj.getString("lastname"),
+                            obj.getString("gender"),
+                            obj.getString("classname"),
+                            obj.getString("schoolname"),
+                            obj.getString("village"),
+                            obj.getString("studentid"),
+                            obj.getString("student_image"));
+
+
+                    txt_stud_id.setText(userData.getUserphone());
+                    edit_first_name.setText(userData.getFirstname());
+                    edit_last_name.setText(userData.getLastname());
+                    edit_email.setText(userData.getUseremail());
+                    et_gender.setText(userData.getGender());
+                    et_class.setText(userData.getClassname());
+                    et_school.setText(userData.getSchoolname());
+                    et_village.setText(userData.getVillage());
 
                     sharedPreferences = getApplicationContext().getSharedPreferences("Mydata", MODE_PRIVATE);
                     editor = sharedPreferences.edit();
@@ -796,14 +750,18 @@ public class EditProfile extends AppCompatActivity {
                     editor.putString("studentvillage", student_village);
                     editor.commit();
 
-                    if (studentimage != null && !studentimage.isEmpty() && !studentimage.equals("null")){
+                    if (userData.getStudent_image() != null && !userData.getStudent_image().isEmpty() && !userData.getStudent_image().equals("null")){
 
-                        Bitmap bm = StringToBitMap(studentimage);
+                        byte[] decodedString = Base64.decode(userData.getStudent_image(), Base64.DEFAULT);
+                        Bitmap imgBitMap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        //Bitmap bm = StringToBitMap(imgBitMap);
 
                         //image = BitmapFactory.decodeStream(studentimage);
+                        RoundedBitmapDrawable mDrawable = RoundedBitmapDrawableFactory.create(getResources(), imgBitMap);
+                        mDrawable.setCircular(true);
+                        imageview.setImageDrawable(mDrawable);
 
-
-                        imageview.setImageBitmap(bm); //Sets the Bitmap to ImageView
+                        imageView1.setImageBitmap(imgBitMap); //Sets the Bitmap to ImageView
                     }
 
                     Log.e("fetch data", student_id + "=" + first_name + "=" + student_class);
@@ -903,4 +861,31 @@ public class EditProfile extends AppCompatActivity {
             return null;
         }
     }//*/
+
+    class DataPart {
+        private String fileName;
+        private byte[] content;
+        private String type;
+
+        public DataPart() {
+        }
+
+        DataPart(String name, byte[] data) {
+            fileName = name;
+            content = data;
+        }
+
+        String getFileName() {
+            return fileName;
+        }
+
+        byte[] getContent() {
+            return content;
+        }
+
+        String getType() {
+            return type;
+        }
+
+    }
 }

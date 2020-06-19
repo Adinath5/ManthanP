@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
             android:layout_gravity="center_horizontal"
-            android:text="Welcome to Manthan Online Exam"
+            android:text="Welcome to Manthan"
             android:gravity="center"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
             android:textColor="@color/colorPrimary"
@@ -78,46 +78,6 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/spacing_mlarge" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="PASSWORD"
-            android:textAlignment="center"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-            android:textColor="@color/blue_grey_500" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-4dp"
-            android:layout_marginRight="-4dp"
-            android:inputType="textPassword"
-            android:maxLength="50"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textColor="@color/blue_grey_800"
-            android:theme="@style/EditText.Blue" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="@dimen/spacing_middle" />
-
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/check_keepsigned"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-4dp"
-            android:layout_marginRight="-4dp"
-            android:layout_marginTop="@dimen/spacing_middle"
-            android:text="Remember me"
-            android:textColor="@color/colorAccent"
-            android:textStyle="bold"
-            android:theme="@style/Checkbox.Blue" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="@dimen/spacing_mxlarge" />
 
         <Button
             android:id="@+id/btn_sign_in"
@@ -126,48 +86,13 @@
             android:layout_marginLeft="-4dp"
             android:layout_marginRight="-4dp"
             android:background="@drawable/btn_rounded_primary"
-            android:text="S I G N  I N"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btn_register"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="-4dp"
-            android:layout_marginRight="-4dp"
-            android:background="@drawable/btn_rounded_primary"
-            android:text="REGISTER"
+            android:text="C O N T I N U E"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
         <View
             android:layout_width="0dp"
             android:layout_height="@dimen/spacing_medium" />
-
-        <LinearLayout
-            android:id="@+id/sign_up_for_account"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_medium"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="FORGOT PASSWORD?"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                android:textColor="@color/blue_grey_400" />
-
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="@dimen/spacing_xlarge" />
-
     </LinearLayout>
 
 </RelativeLayout>

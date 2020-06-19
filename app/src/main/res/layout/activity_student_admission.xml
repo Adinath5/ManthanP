@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:configChanges="orientation|screenSize"
+    tools:context=".Activity.StudentAdmission">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/apbar"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:layout_alignParentTop="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:contentInsetStartWithNavigation="0dp"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/apbar"
+        android:id="@+id/lv1"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        >
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:contentPadding="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lblfirstname"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:visibility="visible"
+                            >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/txtfirstname"
+                                android:fontFamily="@font/gothic"
+                                android:inputType="text"
+                                android:background="@drawable/rounded_border_edittext"
+                                android:hint="First Name" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lblmiddlename"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_below="@id/lblfirstname"
+                            android:visibility="visible"
+                            >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/txtmiddlename"
+                                android:inputType="text"
+                                android:fontFamily="@font/gothic"
+                                android:background="@drawable/rounded_border_edittext"
+                                android:hint="Middle Name" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lbllastname"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_below="@id/lblmiddlename"
+                            android:visibility="visible"
+                            >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/txtlastname"
+                                android:inputType="text"
+                                android:fontFamily="@font/gothic"
+                                android:background="@drawable/rounded_border_edittext"
+                                android:hint="Last Name" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:id="@+id/lblstandard"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:textAlignment="textStart"
+                            android:layout_below="@id/lbllastname"
+                            android:layout_marginTop="10dp"
+                            android:text="Standard"
+                            android:fontFamily="@font/gothic"
+                            android:textColor="#25383C"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            />
+                        <Spinner
+                            android:layout_width="150sp"
+                            android:layout_height="40sp"
+                            android:layout_below="@id/lblstandard"
+                            android:id="@+id/spstandard"
+                            android:padding="10dp"
+                            android:layout_margin="10dp"
+                            android:entries="@array/standard"
+                            android:layout_alignParentLeft="true"
+                            />
+
+                        <TextView
+                            android:id="@+id/lblmedium"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:textAlignment="textStart"
+                            android:layout_below="@id/lbllastname"
+                            android:layout_toRightOf="@id/spstandard"
+                            android:layout_marginTop="10dp"
+                            android:text="Medium"
+                            android:fontFamily="@font/gothic"
+                            android:textColor="#25383C"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            />
+                        <Spinner
+                            android:layout_width="150sp"
+                            android:layout_height="40sp"
+                            android:layout_below="@id/lblstandard"
+                            android:id="@+id/spmedium"
+                            android:layout_toRightOf="@id/spstandard"
+                            android:padding="10dp"
+                            android:layout_margin="10dp"
+                            android:entries="@array/medium"
+                            android:layout_alignParentLeft="false"
+                            />
+
+                        <TextView
+                            android:id="@+id/lblfee"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:textAlignment="textStart"
+                            android:layout_below="@id/spstandard"
+                            android:layout_marginTop="10dp"
+                            android:text="Admission Fee"
+                            android:fontFamily="@font/gothic"
+                            android:textColor="#25383C"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            />
+                        <TextView
+                            android:id="@+id/txtadfee"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_gravity="start"
+                            android:textAlignment="textStart"
+                            android:layout_below="@id/lblfee"
+                            android:layout_marginTop="10dp"
+                            android:hint="400"
+                            android:fontFamily="@font/gothic"
+                            android:textColor="#25383C"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            />
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:contentPadding="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lblmobile"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:visibility="visible"
+                            >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/txtmobileno"
+                                android:fontFamily="@font/gothic"
+                                android:inputType="number"
+                                android:background="@drawable/rounded_border_edittext"
+                                android:hint="Mobile No" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lblemailid"
+                            android:layout_below="@id/lblmobile"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:visibility="visible"
+                            >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/txtemailid"
+                                android:fontFamily="@font/gothic"
+                                android:inputType="textEmailAddress"
+                                android:background="@drawable/rounded_border_edittext"
+                                android:hint="Email ID" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:id="@+id/lbldob"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:textAlignment="textStart"
+                            android:layout_below="@id/lblemailid"
+                            android:layout_marginTop="10dp"
+                            android:text="Date of Birth"
+                            android:fontFamily="@font/gothic"
+                            android:textColor="#25383C"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            />
+                        <TextView
+                            android:id="@+id/txtdateofb"
+                            android:layout_width="140dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="start"
+                            android:layout_marginTop="10dp"
+                            android:layout_below="@+id/lbldob"
+                            android:hint="02-04-2007"
+                            android:inputType="date"
+                            android:maxLength="12"
+                            android:drawableRight="@drawable/ic_date_range_black_24dp"
+                            android:fontFamily="@font/gothic"
+                            android:textAlignment="textStart"
+                            android:singleLine="true"
+                            android:textColor="#25383C"
+                            android:textSize="15sp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view3"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:contentPadding="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/lbladdress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:textAlignment="textStart"
+                            android:layout_marginTop="10dp"
+                            android:text="Address"
+                            android:fontFamily="@font/gothic"
+                            android:textColor="#25383C"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lblcity"
+                            android:layout_below="@id/lbladdress"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:visibility="visible"
+                            >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/txtcity"
+                                android:fontFamily="@font/gothic"
+                                android:inputType="text"
+                                android:background="@drawable/rounded_border_edittext"
+                                android:hint="Village/City" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lbltaluka"
+                            android:layout_below="@id/lblcity"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:visibility="visible"
+                            >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/txttaluka"
+                                android:fontFamily="@font/gothic"
+                                android:inputType="text"
+                                android:background="@drawable/rounded_border_edittext"
+                                android:hint="Taluka" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <TextView
+                            android:id="@+id/lbldistrict"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:textAlignment="textStart"
+                            android:layout_marginTop="10dp"
+                            android:layout_below="@id/lbltaluka"
+                            android:text="District"
+                            android:fontFamily="@font/gothic"
+                            android:textColor="#25383C"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            />
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="40sp"
+                            android:layout_below="@id/lbldistrict"
+                            android:id="@+id/spdistrict"
+                            android:padding="10dp"
+                            android:layout_margin="10dp"
+                            android:layout_alignParentLeft="false"
+                            />
+                        <TextView
+                            android:id="@+id/lblschoolname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:textAlignment="textStart"
+                            android:layout_marginTop="10dp"
+                            android:layout_below="@id/spdistrict"
+                            android:text="School Name"
+                            android:fontFamily="@font/gothic"
+                            android:textColor="#25383C"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            />
+
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="40sp"
+                            android:layout_below="@id/lblschoolname"
+                            android:id="@+id/spschoolname"
+                            android:padding="10dp"
+                            android:layout_margin="10dp"
+                            android:entries="@array/medium"
+                            android:layout_alignParentLeft="false"
+                            />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lblpincode"
+                            android:layout_below="@id/spschoolname"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:visibility="visible"
+                            >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/txtpincode"
+                                android:fontFamily="@font/gothic"
+                                android:inputType="number"
+                                android:background="@drawable/rounded_border_edittext"
+                                android:hint="Pin Code" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/plv2"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Cancle"
+                            android:clickable="true"
+                            android:id="@+id/btncanclepur"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/gothicb"
+                            app:backgroundTint="@color/white"
+                            app:cornerRadius="10dp"
+                            app:strokeColor="@color/colorPrimary"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Save"
+                            android:clickable="true"
+                            android:id="@+id/btnsavepurchase"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/gothicb"
+                            app:cornerRadius="10dp"
+                            app:backgroundTint="@color/colorPrimary"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</RelativeLayout>

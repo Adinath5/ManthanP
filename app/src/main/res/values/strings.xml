@@ -14,7 +14,7 @@
     <string name="yes_dialog">Yes</string>
     <string name="no_dialog">No</string>
 
-    <string name="url_app_google_play">https://play.google.com/store/apps/details?id=com.wire</string>
+    <string name="url_app_google_play">https://play.google.com/store/apps/details?id=com.atharvainfo.manthan</string>
 
     <string name="http">http://</string>
     <string name="download">Download</string>
@@ -47,16 +47,16 @@
     <string name="BACK">BACK</string>
     <string name="SKIP">SKIP</string>
 
-    <string name="firstclass">First Class</string>
-    <string name="Secondclass">Second Class</string>
-    <string name="thidclass">Thirth Class</string>
-    <string name="fourthclass">Fourth Class</string>
-    <string name="fifthclass">Fifth Class</string>
-    <string name="sixthclass">Sixth Class</string>
-    <string name="seventhclass">Seventh Class</string>
-    <string name="eighthclass">Eighth Class</string>
-    <string name="ninthclass">Ninth Class</string>
-    <string name="tenthclass">Tenth Class</string>
+    <string name="firstclass">One</string>
+    <string name="Secondclass">Two</string>
+    <string name="thidclass">Three</string>
+    <string name="fourthclass">Four</string>
+    <string name="fifthclass">Five</string>
+    <string name="sixthclass">Six</string>
+    <string name="seventhclass">Seven</string>
+    <string name="eighthclass">Eight Class</string>
+    <string name="ninthclass">Nine</string>
+    <string name="tenthclass">Ten</string>
 
     <string name="firstexid">FirstClassTestOne</string>
     <string name="twoexid">SecondClassTestOne</string>
@@ -89,4 +89,30 @@
         \n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam efficitur ipsum in placerat molestie.  Fusce quis mauris a enim sollicitudin
     </string>
 
+    <string-array name="standard">
+        <item>1st</item>
+        <item>2nd</item>
+        <item>3rd</item>
+        <item>4th</item>
+        <item>5th</item>
+        <item>6th</item>
+        <item>7th</item>
+        <item>8th</item>
+    </string-array>
+    <string-array name="medium">
+        <item>Marathi</item>
+        <item>English</item>
+        <item>Semi English</item>
+
+    </string-array>
+    <string name="youAreNotUpdatedTitle">Update Available</string>
+    <string name="youAreNotUpdatedMessage">A new version of Manthan is available. Please update to New version</string>
+    <string name="youAreNotUpdatedMessage1">\s now</string>
+    <string name="update">Update</string>
+    <string name="app_upto_date">App Is UpToDate</string>
+    <string name="update_now">Update Now</string>
+    <string name="cancel">Cancle</string>
+    <string name="article_text"> <b>Manthan Publication</b>, is in the business of Educational, Conducting Competitive Examinations and General books Publication products. Over the 15 years, the company has built a strong brand in Publications gained a leadership position in Standard 1st to Std 8th. Level. Since 2000, Manthan has been a major force in the dissemination of knowledge. It is a dominant player in the field of publishing with more than 100 titles in English, Marathi Languages.
+        Over the decade, Manthan has emerged as a preferred brand for Educational Products among teachers, students and guardians in Maharashtra. The company\'s products are sold under the brand names of <b>"Manthan", "Saptahik Dnyanvant", "Manthan Talent Search Exam" And "Vidya Publication"</b>. It\'s portfolio of Educational based Books include high quality supplementary books like Digests (Guides), Workbooks (Question Sets), most of which are published in languages - English, Marathi and Semi-English. The company has a started door to door service namely "Manthan at your door". In Maharashtra</string>
+    <string name="article_vision">In today\'s Information Technology era which creates knowledge based society, competitive examination is the easy way to keep our knowledge updated. This way we can evaluate our quality and knowledge level. Nowadays talent search and educational development among students is only possible with the help of private competitive examinations due to decision of change in examination pattern as per Central Government Right to Education act 2009. At school level, changes in the education system and evaluation method are only beneficial for average students. Competitive exam is the only way to judge the talent of extra ordinary student.  This is need of time to have aptitude based competitive exam in order to prepare these curious student to various future exams like medical, engineering, MPSC,UPSC, MBA, CAT etc.</string>
 </resources>

@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
             android:layout_gravity="center_horizontal"
-            android:text="Welcome to Manthan Online Exam"
+            android:text="Welcome to Manthan"
             android:gravity="center"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
             android:textColor="@color/colorPrimary"

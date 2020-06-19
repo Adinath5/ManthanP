@@ -87,6 +87,10 @@ public class Examination extends AppCompatActivity {
         //showDialog();
 
      //   get_Examinations();
+        empty_view  = (LinearLayout) findViewById(R.id.empty_view);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        edit_search=(AutoCompleteTextView)findViewById( R.id.et_search);
+        rowListItem=new ArrayList<Exam_Model_List>();
 
         sharedPreferences=getApplicationContext().getSharedPreferences("Mydata",MODE_PRIVATE);
         sharedPreferences.edit();
@@ -101,7 +105,7 @@ public class Examination extends AppCompatActivity {
         //Log.i("ExamID", ExamId);
 
 
-        testone = findViewById(R.id.testone);
+        /*testone = findViewById(R.id.testone);
         testtow = findViewById(R.id.testtwo);
         testthree = findViewById(R.id.testthree);
         testfour = findViewById(R.id.testfour);
@@ -110,10 +114,10 @@ public class Examination extends AppCompatActivity {
         testseven = findViewById(R.id.testseven);
         testeight = findViewById(R.id.testeight);
         testnine = findViewById(R.id.testnine);
-        testten = findViewById(R.id.testten);
+        testten = findViewById(R.id.testten);*/
 
 
-        testonepaper1 = findViewById(R.id.tpaperone);
+        /*testonepaper1 = findViewById(R.id.tpaperone);
         testonepaper2 = findViewById(R.id.tpapertwo);
         testtwopaper1 = findViewById(R.id.testtwopaperone);
         testtwopaper2 = findViewById(R.id.testtwopapertwo);
@@ -132,23 +136,23 @@ public class Examination extends AppCompatActivity {
         testninepaper1 = findViewById(R.id.testninepaperone);
         testninepaper2 = findViewById(R.id.testninepapertwo);
         testtenpaper1 = findViewById(R.id.testtenpaperone);
-        testtenpaper2 = findViewById(R.id.testtenpapertwo);
+        testtenpaper2 = findViewById(R.id.testtenpapertwo);*/
 
 
 
         cardview1 = findViewById(R.id.card_view1);
         cardview2 = findViewById(R.id.card_view2);
-        cardView3 = findViewById(R.id.card_view3);
+       /* cardView3 = findViewById(R.id.card_view3);
         cardView4 = findViewById(R.id.card_view4);
         cardView5 = findViewById(R.id.card_view5);
         cardView6 = findViewById(R.id.card_view6);
         cardView7 = findViewById(R.id.card_view7);
         cardView8 = findViewById(R.id.card_view8);
         cardView9 = findViewById(R.id.card_view9);
-        cardView10 = findViewById(R.id.card_view10);
+        cardView10 = findViewById(R.id.card_view10);*/
 
 
-        testone.setOnClickListener(new View.OnClickListener() {
+       /* testone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cardview1.setVisibility(View.VISIBLE);
@@ -302,9 +306,9 @@ public class Examination extends AppCompatActivity {
                         cardView9.setVisibility(View.GONE);
                         cardView10.setVisibility(View.VISIBLE);
                     }
-                });
+                });*/
 
-        testonepaper1.setOnClickListener(new View.OnClickListener() {
+       /* testonepaper1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -331,9 +335,9 @@ public class Examination extends AppCompatActivity {
                // }
 
             }
-        });
+        });*/
 
-        testonepaper2.setOnClickListener(new View.OnClickListener() {
+      /*  testonepaper2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -358,8 +362,12 @@ public class Examination extends AppCompatActivity {
                 //}
 
             }
-        });
+        });*/
 
+
+      //showDialog();
+      //get_Examinations();
+        fetchJSON();
 
     }
 
@@ -407,12 +415,12 @@ public class Examination extends AppCompatActivity {
                 String response="";
                 HashMap<String, String> map=new HashMap<>();
                 map.put("studentid", student_id);
-               // map.put("examid", exam_id);
+                map.put("classname", ClassName);
                // map.put("exid", exid);
 
 
                 try {
-                    HttpRequest req = new HttpRequest(MyConfig.URL_GET_ASSESSMENT_RESULT);
+                    HttpRequest req = new HttpRequest(MyConfig.URL_GET_Examinations);
                     response = req.prepare(HttpRequest.Method.POST).withData(map).sendAndReadString();
                 } catch (Exception e) {
                     response=e.getMessage();
@@ -440,16 +448,67 @@ public class Examination extends AppCompatActivity {
             if (jsonObject.optString("Result").equals("success")) {
                 removeSimpleProgressDialog();
 
-                JSONArray json = jsonObject.getJSONArray("assesrecord");
-                for (int i = 0; i < json.length(); i++)
+                JSONArray j = jsonObject.getJSONArray("examlist");
+                for (int i = 0; i < j.length(); i++)
                 {
-                    JSONObject obj = json.getJSONObject(i);
-                   // txt_right_que.setText(obj.getString("rightans"));
-                   // txt_wrong_que.setText(obj.getString("wrongans"));
+                    JSONObject json = j.getJSONObject(i);
+                    rowListItem.add(new Exam_Model_List(json.getString("exam_id"),
+                            json.getString("duration"),
+                            json.getString("passmark"),
+                            json.getString("exam_fee"),
+                            json.getString("exam_medium"),
+                            json.getString("class_name"),
+                            json.getString("exam_status"),
+                            json.getString("quetions"),
+                            json.getString("exam_testname"),
+                            json.getString("exam_papername"),
+                            json.getString("terms"),
+                            json.getString("exam_type")
 
-                   // Log.e("fetch data", student_id + "=" + first_name + "=" + student_class);
+                    ) );
 
                 }
+
+                if (rowListItem.size() > 0){
+//                    progressDialog.dismiss();
+                    removeSimpleProgressDialog();
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),1, LinearLayoutManager.VERTICAL,false);
+                    mRecyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
+                    //rowListItem = get_ALL_CATEGORY();
+                    mAdapter =new Exam_Adapter(Examination.this,rowListItem);
+                    mRecyclerView.setAdapter(mAdapter);
+                    mAdapter.notifyDataSetChanged();
+
+                }else{
+                   // progressDialog.dismiss();
+                    removeSimpleProgressDialog();
+                    empty_view.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                }
+
+
+                // Capture Text in EditText
+                edit_search.addTextChangedListener(new TextWatcher() {
+
+                    @Override
+                    public void afterTextChanged(Editable arg0) {
+                        String text = edit_search.getText().toString().toLowerCase( Locale.getDefault());
+                        mAdapter.filter(text);
+                    }
+
+                    @Override
+                    public void beforeTextChanged(CharSequence arg0, int arg1,
+                                                  int arg2, int arg3) {
+                        // TODO Auto-generated method stub
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                              int arg3) {
+                        // TODO Auto-generated method stub
+                    }
+                });
+
             } else {
                 removeSimpleProgressDialog();
                 Toast.makeText(this, getErrorCode(response), Toast.LENGTH_SHORT).show();
@@ -469,10 +528,23 @@ public class Examination extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         JSONObject j = null;
-                        try {
+                       /* try {
                             j = new JSONObject(response);
                             result = j.getJSONArray(JSON_ARRAY);
                             getCategory(result);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }*/
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("Result").equals("Success")) {
+                                JSONArray json = jsonObject.getJSONArray("examlist");
+
+                                //j = new JSONObject(response);
+                                //result = j.getJSONArray(JSON_ARRAY);
+                                result = jsonObject.getJSONArray("examlist");
+                                getCategory(result);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -493,14 +565,13 @@ public class Examination extends AppCompatActivity {
 
                 sharedPreferences=getApplicationContext().getSharedPreferences("Mydata",MODE_PRIVATE);
                 sharedPreferences.edit();
-                String student_class= sharedPreferences.getString("student_class",null);
+                String student_class= sharedPreferences.getString("classname",null);
                 String student_id= sharedPreferences.getString("idtag",null);
 
                 Log.e("student_class",student_class +" student_id:"+student_id);
 
-                params.put("student_class",student_class);
-                params.put("student_id",student_id);
-
+                params.put("studentid",student_id);
+                params.put("classname",student_class);
                 return params;
             }
         };
@@ -514,22 +585,15 @@ public class Examination extends AppCompatActivity {
                 rowListItem.add(new Exam_Model_List(json.getString("exam_id"),
                         json.getString("duration"),
                         json.getString("passmark"),
-                        json.getString("re_take_after"),
-                        json.getString("exam_title"),
-                        json.getString("type"),
                         json.getString("exam_fee"),
-                        json.getString("dept_name"),
+                        json.getString("exam_medium"),
                         json.getString("class_name"),
-                        json.getString("subject"),
-                        json.getString("deadline"),
                         json.getString("exam_status"),
-                        json.getString("next_retake"),
                         json.getString("quetions"),
-                        json.getString("exam_attended"),
-                        json.getString("student_retake"),
-                        json.getString("exam_allowed"),
-                        json.getString("next_retake_b"),
-                        json.getString("terms")
+                        json.getString("exam_testname"),
+                        json.getString("exam_papername"),
+                        json.getString("terms"),
+                        json.getString("exam_type")
 
                 ) );
 

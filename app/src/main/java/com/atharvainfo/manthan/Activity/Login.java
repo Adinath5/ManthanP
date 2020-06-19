@@ -26,6 +26,7 @@ import com.atharvainfo.manthan.utils.HttpRequest;
 import com.atharvainfo.manthan.utils.Tools;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,7 +45,7 @@ public class Login extends AppCompatActivity {
     AppCompatCheckBox check_keepsigned;
     private static ProgressDialog mProgressDialog;
     private final int jsoncode = 1;
-
+    String usertype;
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -60,12 +61,10 @@ public class Login extends AppCompatActivity {
 
         parent_view = findViewById(android.R.id.content);
 
-        parent_view = findViewById(android.R.id.content);
+
         edit_username = (TextInputEditText) findViewById(R.id.username);
-        edit_password = (TextInputEditText) findViewById(R.id.password);
+
         btn_sign_in = (Button) findViewById(R.id.btn_sign_in);
-        btn_register = (Button) findViewById(R.id.btn_register);
-        check_keepsigned = (AppCompatCheckBox) findViewById(R.id.check_keepsigned);
 
         Tools.setSystemBarColor(this, android.R.color.white);
         Tools.setSystemBarLight(this);
@@ -80,77 +79,23 @@ public class Login extends AppCompatActivity {
                 btn_sign_in.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //Snackbar.make(parent_view, "Sign Up", Snackbar.LENGTH_SHORT).show();
-                        checkLogin(view);
+
+                        if(!edit_username.getText().toString().matches("[0-9]{10}")){
+                            Toast.makeText(Login.this, "Enter Valid Mobile Number", Toast.LENGTH_SHORT).show();
+                        } else {
+                            fetchJSON();
+                        }
                     }
                 });
 
-                ((View) findViewById(R.id.sign_up_for_account)).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                      //  Intent i = new Intent(Login.this, ForgotPWD.class);
-                      //  startActivity(i);
-                        // Snackbar.make(parent_view, "Sign up for an account", Snackbar.LENGTH_SHORT).show();
-                    }
-                });
 
-                btn_register.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent register = new Intent(Login.this, Register.class);
-                        startActivity(register);
-                        finish();
-                    }
-                });
             }
         } else {
             Intent i = new Intent(Login.this, NoItemInternetImage.class);
             startActivity(i);
         }
 
-        sharedPreferences=getApplicationContext().getSharedPreferences("Mydata",MODE_PRIVATE);
-        sharedPreferences.edit();
-        String usernamelog= sharedPreferences.getString("user_name",null);
-        String passwordlog= sharedPreferences.getString("password",null);
-        // String resultlog="2";
-        Log.e("login",usernamelog +"/////"+passwordlog);
-        if((!(usernamelog == null) )){
-            Intent i = new Intent(Login.this, MainActivity.class);
-            startActivity(i);
-            finish();
-        }
 
-        // perform logic
-        sharedPreferences=getApplicationContext().getSharedPreferences("Mydata",MODE_PRIVATE);
-        sharedPreferences.edit();
-        String username1= sharedPreferences.getString("username1",null);
-        String password1= sharedPreferences.getString("password1",null);
-        if((!(username1 == null) )){
-            check_keepsigned.setChecked(true);
-            edit_username.setText(username1);
-            edit_password.setText(password1);
-        }
-
-
-        check_keepsigned.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-            {
-                if ( isChecked )
-                {
-                    sharedPreferences = getApplicationContext().getSharedPreferences("Mydata", MODE_PRIVATE);
-                    editor = sharedPreferences.edit();
-                    editor.putString("username1", edit_username.getText().toString());
-                    editor.putString("password1",  edit_password.getText().toString());
-                    editor.commit();
-                    Log.e("checked", edit_username.getText().toString() +"/////"+ edit_password.getText().toString());
-
-
-                }
-
-            }
-        });
 
     }
 
@@ -183,10 +128,9 @@ public class Login extends AppCompatActivity {
     private void fetchJSON(){
 
         final String username = edit_username.getText().toString();
-        final String pass = edit_password.getText().toString();
 
         Log.i("UserName", username);
-        Log.i("Pasdword", pass);
+     //   Log.i("Pasdword", pass);
         showSimpleProgressDialog(this, "Signing Up...","Please Wait ...",false);
 
         new AsyncTask<Void, Void, String>(){
@@ -194,7 +138,7 @@ public class Login extends AppCompatActivity {
                 String response="";
                 HashMap<String, String> map=new HashMap<>();
                 map.put("username", username);
-                map.put("password", pass);
+                //map.put("password", pass);
 
                 try {
                     HttpRequest req = new HttpRequest(MyConfig.URL_LOGIN);
@@ -225,17 +169,36 @@ public class Login extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.optString("result").equals("success")) {
                         removeSimpleProgressDialog();
-                        sharedPreferences = getApplicationContext().getSharedPreferences("Mydata", MODE_PRIVATE);
-                        editor = sharedPreferences.edit();
-                        editor.putString("user_name", edit_username.getText().toString());
-                        editor.putString("password", edit_password.getText().toString());
-                        editor.commit();
-                        Log.e("Login",edit_username.getText().toString() +"/////"+edit_password.getText().toString());
-                        Intent i = new Intent( Login.this, MainActivity.class );
+                        JSONArray json = jsonObject.getJSONArray("Data");
+                        for (int i = 0; i < json.length(); i++) {
+                            JSONObject obj = json.getJSONObject(i);
+                            sharedPreferences = getApplicationContext().getSharedPreferences("Mydata", MODE_PRIVATE);
+                            editor = sharedPreferences.edit();
+                            editor.putString("user_name", edit_username.getText().toString());
+                            editor.putString("user_type", obj.getString("usertype"));
+                            editor.commit();
+                            usertype = obj.getString("usertype");
+                        }
+
+                        Log.e("Login",edit_username.getText().toString());
+                        if (usertype.equals("CoOrdinator")) {
+                            Intent i = new Intent(Login.this, codashboard.class);
+                            startActivity(i);
+                        }
+                        if (usertype.equals("Teacher")) {
+                            Intent i = new Intent(Login.this, codashboard.class);
+                            startActivity(i);
+                        }
+                        if (usertype.equals("Student")) {
+                            Intent i = new Intent(Login.this, MainActivity.class);
+                            startActivity(i);
+                        }
+
+                    } else if (jsonObject.optString("result").equals("failure")) {
+                        removeSimpleProgressDialog();
+                        Intent i = new Intent( Login.this, Register.class );
                         startActivity( i );
 
-                    } else {
-                        removeSimpleProgressDialog();
                         Toast.makeText(this, getErrorCode(response), Toast.LENGTH_SHORT).show();
                     }
 

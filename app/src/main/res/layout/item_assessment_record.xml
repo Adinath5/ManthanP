@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/grey_40"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_80"
+        android:layout_margin="1dp">
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/test_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="Exam Name"
+                    android:layout_margin="5dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/grey_90"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/test_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:maxLines="1"
+                    android:layout_margin="5dp"
+                    android:singleLine="true"
+                    android:layout_below="@+id/test_name"
+                    android:text="Exam Date"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/grey_60" />
+
+            </RelativeLayout>
+            <View
+                android:layout_width="@dimen/spacing_smlarge"
+                android:layout_height="0dp" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_noofqt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:layout_margin="3dp"
+                        android:singleLine="true"
+                        android:text="No.of Quetion :"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/grey_90"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txt_wrightans"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="Right Ans :"
+                        android:layout_margin="3dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/grey_90"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/text_wrongans"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="Wrong Ans :"
+                        android:layout_margin="3dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/grey_90"
+                        android:textStyle="bold"/>
+
+
+                    <TextView
+                        android:id="@+id/text_solvedqt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="Solved Quetions :"
+                        android:layout_margin="3dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/grey_90"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/text_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="Status :"
+                        android:layout_margin="3dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/grey_90"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <!--<TextView
+                    android:id="@+id/txt_deadline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="deadline"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/blue_300"
+                    android:textStyle="bold" />-->
+
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <!-- <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="right"
+             android:gravity="center_vertical"
+             android:orientation="horizontal">
+
+             <ImageButton
+                 android:id="@+id/btn_edit"
+                 android:layout_width="30dp"
+                 android:layout_height="30dp"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginLeft="15dp"
+                 android:background="@drawable/edit"
+                 />
+
+             <ImageButton
+                 android:id="@+id/btn_delete"
+                 android:layout_width="30dp"
+                 android:layout_marginTop="10dp"
+                 android:layout_height="30dp"
+                 android:layout_marginLeft="15dp"
+                 android:layout_marginRight="15dp"
+                 android:background="@drawable/delete" />
+
+         </LinearLayout>-->
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

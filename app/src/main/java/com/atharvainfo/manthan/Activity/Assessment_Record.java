@@ -40,7 +40,7 @@ public class Assessment_Record extends AppCompatActivity {
     SharedPreferences.Editor editor;
 
     TextView txt_exam_name,txt_student_name,txt_right_que,txt_wrong_que,txt_score,txt_result;
-    String student_id,exam_id,exam_title,student_class,first_name,last_name, exid;
+    String student_id,exam_id,exam_title,student_class,first_name,last_name, exid, passmark;
 
     AppCompatButton btn_review,btn_dashboard;
 
@@ -55,7 +55,7 @@ public class Assessment_Record extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
-        setContentView(R.layout.activity_assessment__record);
+
         initToolbar();
         txt_exam_name= (TextView) findViewById(R.id.txt_exam_name);
         txt_student_name= (TextView) findViewById(R.id.txt_student_name);
@@ -76,6 +76,7 @@ public class Assessment_Record extends AppCompatActivity {
         exam_id= sharedPreferences.getString("exam_id",null);
         exam_title= sharedPreferences.getString("exam_title",null);
         exid = sharedPreferences.getString("exid",null);
+        passmark = sharedPreferences.getString("exam_passmark", null);
       //  GetAssessmentRecord();
         txt_exam_name.setText(exam_id+" : "+exam_title);
         txt_student_name.setText(first_name+" "+ last_name);
@@ -191,6 +192,13 @@ public class Assessment_Record extends AppCompatActivity {
                     txt_right_que.setText(obj.getString("rightans"));
                     txt_wrong_que.setText(obj.getString("wrongans"));
                     txt_score.setText(String.valueOf(scor));
+                    int ps = Integer.valueOf(passmark);
+                    double pasm= Double.valueOf(ps);
+                    if (scor >= pasm){
+                        txt_result.setText("Pass");
+                    } else {
+                        txt_result.setText("Fail");
+                    }
 
                     Log.e("fetch data", student_id + "=" + first_name + "=" + student_class);
 

@@ -206,6 +206,7 @@ public class Register extends AppCompatActivity {
                         editor.putString("user_name", edit_username.getText().toString());
                         editor.putString("password", edit_password.getText().toString());
                         editor.putString("emailid", edit_emailid.getText().toString());
+                        editor.putString("user_type", "Student");
                         editor.commit();
                         Log.e("Register",edit_username.getText().toString() +"/////"+edit_password.getText().toString() + "/////"+edit_emailid.getText().toString());
                         Intent i = new Intent( Register.this, MainActivity.class );
@@ -225,19 +226,7 @@ public class Register extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                /*if (isSuccess(response)) {
 
-                    Log.d("ResponseList", response);
-//                    pref.setUserName(username.toString());
-
-
-
-
-                }else {
-
-
-
-                }*/
         }
     }
 

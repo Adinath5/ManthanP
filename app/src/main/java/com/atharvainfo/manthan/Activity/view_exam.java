@@ -89,7 +89,7 @@ public class view_exam extends AppCompatActivity {
         Log.e("data : " ,exam_allowed +"///"+student_id+"//"+exam_id);
 
 
-        if (exam_status != null && !exam_status.isEmpty() && !exam_status.equals("null")){
+        if (exam_status.equals("Incomplete")){
 
             btn_begin_assessment.setVisibility(View.GONE);
             lyt_error.setVisibility(View.VISIBLE);
@@ -108,7 +108,7 @@ public class view_exam extends AppCompatActivity {
 
         }
         edit_status.setText(exam_status);
-        txt_exam_name.setText(exam_title);
+        txt_exam_name.setText(exam_id);
         txt_duration.setText(exam_duration+" Minutes");
         txt_quetions.setText(quetions);
         txt_exam_type.setText(exam_type);
@@ -180,7 +180,6 @@ public class view_exam extends AppCompatActivity {
                                 startActivity(i);
                                 finish();
                                 dialog1.dismiss();
-
 
                             }
                         })

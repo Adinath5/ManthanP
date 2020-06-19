@@ -2,11 +2,16 @@ package com.atharvainfo.manthan;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -14,6 +19,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,6 +28,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,19 +36,26 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atharvainfo.manthan.Activity.AboutUs;
+import com.atharvainfo.manthan.Activity.AssessmentRecord;
 import com.atharvainfo.manthan.Activity.EditProfile;
+import com.atharvainfo.manthan.Activity.ExamHallTicket;
 import com.atharvainfo.manthan.Activity.Examination;
 import com.atharvainfo.manthan.Activity.Help;
 import com.atharvainfo.manthan.Activity.Login;
 import com.atharvainfo.manthan.Activity.NoItemInternetImage;
 import com.atharvainfo.manthan.Activity.Notice;
+import com.atharvainfo.manthan.Activity.StudentAdmission;
 import com.atharvainfo.manthan.Class.DatabaseHelper;
+import com.atharvainfo.manthan.Class.GooglePlayStoreAppVersionNameLoader;
 import com.atharvainfo.manthan.Class.MyConfig;
+import com.atharvainfo.manthan.Class.WSCallerVersionListener;
+import com.atharvainfo.manthan.Model.UserData;
 import com.atharvainfo.manthan.utils.HttpRequest;
 import com.atharvainfo.manthan.utils.Tools;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
@@ -55,6 +69,10 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,7 +94,7 @@ import cz.msebera.android.httpclient.message.BasicNameValuePair;
 import cz.msebera.android.httpclient.util.EntityUtils;
 import com.atharvainfo.manthan.Activity.classselect;
 
-public class MainActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
+public class MainActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, WSCallerVersionListener {
 
     private ActionBar actionBar;
     private Toolbar toolbar;
@@ -87,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
     ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
     TextView txt_username,txt_class_dept;
-    CircularImageView Header_img;
+    ImageView Header_img;
 
     SliderLayout sliderLayout ;
     HashMap<String, Integer> HashMapForLocalRes ;
@@ -100,7 +118,8 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
 
     SQLiteDatabase mdatabase;
     private DatabaseHelper helper;
-
+    String currentVersion;
+    boolean isForceUpdate = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +132,13 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         if (activeNetwork != null) { // connected to the internet
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI  || activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE ) {
                 // connected to wif
+                try {
+                    currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                new GooglePlayStoreAppVersionNameLoader(getApplicationContext(), this).execute();
 
             }
         } else {
@@ -124,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         helper = new DatabaseHelper(this);
 
         initToolbar();
-        initNavigationMenu();
+
 
         sliderLayout = (SliderLayout) findViewById(R.id.slider);
 
@@ -187,7 +213,27 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                 startActivity(i);
             }
         });
-
+        lyt_assessment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, AssessmentRecord.class);
+                startActivity(i);
+            }
+        });
+        lyt_download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, ExamHallTicket.class);
+                startActivity(i);
+            }
+        });
+        lyt_alerts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, StudentAdmission.class);
+                startActivity(i);
+            }
+        });
 
         sharedPreferences=getApplicationContext().getSharedPreferences("Mydata",MODE_PRIVATE);
         sharedPreferences.edit();
@@ -204,8 +250,17 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
             fetchJSON();
         }
 
+        initNavigationMenu();
+
     }
 
+    @Override
+    public void onGetResponse(boolean isUpdateAvailable) {
+        Log.e("ResultAPPMAIN", String.valueOf(isUpdateAvailable));
+        if (isUpdateAvailable) {
+            showUpdateDialog();
+        }
+    }
 
 
     private void initToolbar() {
@@ -226,12 +281,12 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         View v = nav_view.getHeaderView(0);
-        Header_img = (CircularImageView) v.findViewById(R.id.image);
+        Header_img = (ImageView) v.findViewById(R.id.image);
         txt_username = (TextView) v.findViewById(R.id.username);
         txt_class_dept = (TextView) v.findViewById(R.id.class_dept);
-        txt_username.setText(first_name+" "+last_name);
+        //txt_username.setText(first_name+" "+last_name);
 
-        txt_class_dept.setText(student_id+"  "+class_name +"("+dept_name+")");
+        //txt_class_dept.setText(student_id+"  "+class_name +"("+dept_name+")");
         String img_path = MyConfig.Parent_Url+"assets/uploads/avatar/"+avator;
         InputStream in = null; //Reads whatever content found with the given URL Asynchronously And returns.
 
@@ -282,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                 else if(titile.equalsIgnoreCase("Rate This App")){
 
                     //  Uri uri = Uri.parse("market://details?id=" + context.getPackageName());
-                    Uri uri = Uri.parse("market://details?id=com.wire");
+                    Uri uri = Uri.parse("market://details?id=com.atharvainfo.manthan");
                     Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
                     // To count with Play market backstack, After pressing back button,
                     // to taken back to our application, we need to add following flags to intent.
@@ -293,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                         startActivity(goToMarket);
                     } catch (ActivityNotFoundException e) {
                         startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("http://play.google.com/store/apps/details?id=com.wire")));//Uri.parse("http://play.google.com/store/apps/details?id=" + context.getPackageName())));
+                                Uri.parse("http://play.google.com/store/apps/details?id=com.atharvainfo.manthan")));//Uri.parse("http://play.google.com/store/apps/details?id=" + context.getPackageName())));
 
                     }
                 }
@@ -408,8 +463,8 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
         HashMapForLocalRes.put("2", R.drawable.banner2);
         HashMapForLocalRes.put("3", R.drawable.banner3);
         HashMapForLocalRes.put("4", R.drawable.banner4);
-        // HashMapForLocalRes.put("5", R.drawable.banner5);
-
+        HashMapForLocalRes.put("5", R.drawable.banner5);
+        HashMapForLocalRes.put("6", R.drawable.banner6);
     }
 
     private void showCustomDialog() {
@@ -526,6 +581,18 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                         for (int i = 0; i < json.length(); i++)
                         {
                             JSONObject obj = json.getJSONObject(i);
+                            UserData userData = new UserData(obj.getString("userphone"),
+                                    obj.getString("useremail"),
+                                    obj.getString("userpass"),
+                                    obj.getString("firstname"),
+                                    obj.getString("lastname"),
+                                    obj.getString("gender"),
+                                    obj.getString("classname"),
+                                    obj.getString("schoolname"),
+                                    obj.getString("village"),
+                                    obj.getString("studentid"),
+                                    obj.getString("student_image"));
+
                             student_id = obj.getString("studentid");
                             first_name= obj.getString("firstname");
                             last_name = obj.getString("lastname");
@@ -534,6 +601,8 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                             email = obj.getString("useremail");
                             class_name = obj.getString("schoolname");
 
+                            txt_username.setText(first_name + " "+ last_name);
+                            txt_class_dept.setText(student_class+ " "+ class_name);
                             sharedPreferences = getApplicationContext().getSharedPreferences("Mydata", MODE_PRIVATE);
                             editor = sharedPreferences.edit();
                             editor.putString("idtag", student_id);
@@ -546,6 +615,21 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
                             editor.commit();
 
                             Log.e("fetch data", student_id + "=" + first_name + "=" + student_class);
+
+                            if (userData.getStudent_image() != null && !userData.getStudent_image().isEmpty() && !userData.getStudent_image().equals("null")){
+
+                                byte[] decodedString = Base64.decode(userData.getStudent_image(), Base64.DEFAULT);
+                                Bitmap imgBitMap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                                //Bitmap bm = StringToBitMap(imgBitMap);
+
+                                //image = BitmapFactory.decodeStream(studentimage);
+                                RoundedBitmapDrawable mDrawable = RoundedBitmapDrawableFactory.create(getResources(), imgBitMap);
+                                mDrawable.setCircular(true);
+                                Header_img.setImageDrawable(mDrawable);
+
+                                //imageView1.setImageBitmap(imgBitMap); //Sets the Bitmap to ImageView
+                            }
+
 
                         }
                     } else {
@@ -612,4 +696,30 @@ public class MainActivity extends AppCompatActivity implements BaseSliderView.On
             e.printStackTrace();
         }
     }
+
+
+    public void showUpdateDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+
+        alertDialogBuilder.setTitle(MainActivity.this.getString(R.string.app_name));
+        alertDialogBuilder.setMessage(MainActivity.this.getString(R.string.youAreNotUpdatedMessage));
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton(R.string.update_now, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                MainActivity.this.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+                dialog.cancel();
+            }
+        });
+        alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (isForceUpdate) {
+                    finish();
+                }
+                dialog.dismiss();
+            }
+        });
+        alertDialogBuilder.show();
+    }
+
 }

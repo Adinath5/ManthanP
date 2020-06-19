@@ -79,6 +79,105 @@ public class classselect extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        lyt_third.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sharedPreferences = getApplicationContext().getSharedPreferences("Mydata", MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("classname", getString(R.string.thidclass));
+                //editor.putString("exam_id", getString(R.string.twoexid));
+                editor.commit();
+                System.out.print(R.string.thidclass);
+
+                Intent i = new Intent(classselect.this, Examination.class);
+                startActivity(i);
+            }
+        });
+        lyt_fourth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sharedPreferences = getApplicationContext().getSharedPreferences("Mydata", MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("classname", getString(R.string.fourthclass));
+                //editor.putString("exam_id", getString(R.string.twoexid));
+                editor.commit();
+                System.out.print(R.string.fourthclass);
+
+                Intent i = new Intent(classselect.this, Examination.class);
+                startActivity(i);
+            }
+        });
+
+        lyt_five.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sharedPreferences = getApplicationContext().getSharedPreferences("Mydata", MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("classname", getString(R.string.fifthclass));
+                //editor.putString("exam_id", getString(R.string.twoexid));
+                editor.commit();
+                System.out.print(R.string.fifthclass);
+
+                Intent i = new Intent(classselect.this, Examination.class);
+                startActivity(i);
+            }
+        });
+        lyt_six.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sharedPreferences = getApplicationContext().getSharedPreferences("Mydata", MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("classname", getString(R.string.sixthclass));
+                //editor.putString("exam_id", getString(R.string.twoexid));
+                editor.commit();
+                System.out.print(R.string.sixthclass);
+
+                Intent i = new Intent(classselect.this, Examination.class);
+                startActivity(i);
+            }
+        });
+        lyt_seven.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sharedPreferences = getApplicationContext().getSharedPreferences("Mydata", MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("classname", getString(R.string.seventhclass));
+                //editor.putString("exam_id", getString(R.string.twoexid));
+                editor.commit();
+                System.out.print(R.string.seventhclass);
+
+                Intent i = new Intent(classselect.this, Examination.class);
+                startActivity(i);
+            }
+        });
+        lyt_eight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sharedPreferences = getApplicationContext().getSharedPreferences("Mydata", MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("classname", getString(R.string.eighthclass));
+                //editor.putString("exam_id", getString(R.string.twoexid));
+                editor.commit();
+                System.out.print(R.string.eighthclass);
+
+                Intent i = new Intent(classselect.this, Examination.class);
+                startActivity(i);
+            }
+        });
+        lyt_nine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sharedPreferences = getApplicationContext().getSharedPreferences("Mydata", MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("classname", getString(R.string.ninthclass));
+                //editor.putString("exam_id", getString(R.string.twoexid));
+                editor.commit();
+                System.out.print(R.string.ninthclass);
+
+                Intent i = new Intent(classselect.this, Examination.class);
+                startActivity(i);
+            }
+        });
 
     }
 
